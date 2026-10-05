@@ -1,46 +1,93 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KRPTIME — Create Your Time</title>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KRPTIME — Create Your Time</title>
 <style>
-:root{--bg:#070707;--card:#111;--line:#292929;--text:#f4f4f4;--muted:#999;--gold:#d7b56d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}a{color:inherit;text-decoration:none}.wrap{max-width:1100px;margin:auto;padding:0 18px}header{position:sticky;top:0;z-index:5;background:#070707ee;border-bottom:1px solid var(--line)}.nav{height:64px;display:flex;align-items:center;justify-content:space-between}.logo{font-weight:900;letter-spacing:4px}.cart{border:1px solid #444;border-radius:999px;padding:9px 13px;font-size:13px}.hero{text-align:center;padding:65px 0 35px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:3px;font-weight:700}.hero h1{font-size:clamp(42px,11vw,86px);margin:12px 0;letter-spacing:5px}.hero p{color:var(--muted);max-width:560px;margin:0 auto 25px;line-height:1.6}.btn{display:inline-block;border:0;border-radius:999px;padding:13px 20px;background:#f4f4f4;color:#080808;font-weight:800;cursor:pointer}.section{padding:35px 0}.title{font-size:28px;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}.watch{height:210px;display:grid;place-items:center;background:radial-gradient(circle,#333,#151515 45%,#0b0b0b 70%)}.watch:before{content:"";width:110px;height:110px;border:13px solid #aaa;border-radius:50%;background:#111;box-shadow:0 0 0 3px #666,0 28px 0 12px #777}.info{padding:15px}.price{font-weight:800;margin-top:6px}.config{display:grid;gap:18px}.preview{background:#0e0e0e;border:1px solid var(--line);border-radius:20px;min-height:350px;display:grid;place-items:center}.bigwatch{width:210px;height:210px;border-radius:50%;border:25px solid #aaa;background:#171717;box-shadow:0 0 0 5px #555;position:relative}.brandmark{position:absolute;z-index:2;top:69px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:2px;font-weight:900;color:#eee;white-space:nowrap}.dial-brand{position:absolute;z-index:10;top:54px;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:2.5px;font-weight:900;color:#fff;white-space:nowrap;text-shadow:0 1px 3px #000}.bigwatch:before{content:"";position:absolute;inset:28px;border-radius:50%;background:var(--dial,#151515);border:2px solid #777}.bigwatch:after{content:"";position:absolute;left:105px;top:57px;width:3px;height:76px;background:var(--hand,#eee);transform:rotate(28deg);transform-origin:bottom}.controls{display:grid;gap:12px}.control{background:var(--card);border:1px solid var(--line);padding:15px;border-radius:15px}.control label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid #3a3a3a;background:#171717;color:#eee;border-radius:10px;padding:10px 12px;cursor:pointer}.choice.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}.control input{width:100%;background:#0a0a0a;border:1px solid #333;color:#fff;border-radius:10px;padding:12px}.total{display:flex;justify-content:space-between;font-size:22px;font-weight:900;margin-bottom:12px}.note{font-size:12px;color:var(--muted);line-height:1.5}footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:12px;margin-top:30px}@media(min-width:760px){.config{grid-template-columns:1fr 1fr}.grid{grid-template-columns:repeat(4,1fr)}.preview{min-height:560px}}
+:root{--bg:#050505;--panel:rgba(15,15,15,.88);--line:#292929;--text:#f5f3ee;--muted:#9c9a95;--gold:#d9b66f;--gold2:#f0d18f}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#050505;color:var(--text);font-family:Inter,Arial,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 20%,#24201833,transparent 45%);z-index:-1}
+a{text-decoration:none;color:inherit}.wrap{width:min(1320px,calc(100% - 32px));margin:auto}
+header{position:sticky;top:0;z-index:50;background:#050505e8;backdrop-filter:blur(18px);border-bottom:1px solid #222}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:5px;font-size:19px}.navlinks{display:flex;gap:28px;color:#bdbab4;font-size:12px;letter-spacing:1.7px;text-transform:uppercase}.navlinks a:hover{color:#fff}.cart{border:1px solid #454545;border-radius:999px;padding:9px 15px;font-size:12px}
+.hero{min-height:650px;display:grid;place-items:center;text-align:center;padding:80px 0 65px;overflow:hidden;position:relative}
+.hero .glow{position:absolute;width:650px;height:650px;border-radius:50%;background:#b9964a10;filter:blur(70px)}.hero>*{position:relative}
+.logoHero{width:min(250px,55vw);opacity:.95;filter:drop-shadow(0 20px 35px #000)}
+.eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);margin-top:24px}.hero h1{font-family:Georgia,serif;font-size:clamp(48px,9vw,100px);font-weight:400;letter-spacing:6px;margin:10px 0}.hero p{color:var(--muted);max-width:560px;line-height:1.7;margin:0 auto 25px}.btn{border:0;background:linear-gradient(135deg,#d6af64,#f0d18f);color:#111;padding:15px 24px;border-radius:8px;font-weight:800;letter-spacing:1.2px;cursor:pointer}.btn:hover{filter:brightness(1.08)}
+.section{padding:70px 0}.section-title{text-align:center;font-family:Georgia,serif;font-size:42px;font-weight:400;margin:0 0 35px}.sub{text-align:center;color:var(--muted);margin-top:-22px;margin-bottom:35px}
+.inspirations{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.insp{background:linear-gradient(145deg,#151515,#090909);border:1px solid #252525;border-radius:18px;padding:18px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;position:relative}.insp:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,#fff1 0,transparent 40%)}.insp strong{font-size:18px;position:relative}.insp span{color:var(--muted);font-size:13px;margin-top:6px;position:relative}
 
-.logo-hero{
-  width:min(260px,62vw);
-  height:auto;
-  display:block;
-  margin:0 auto 18px;
-  filter: drop-shadow(0 10px 28px rgba(255,255,255,.10));
-}
+.config{padding:35px 0 100px}.config-head{text-align:left;margin-bottom:24px}.config-head .eyebrow{margin:0}.config-head h2{font:400 52px Georgia,serif;margin:7px 0}.config-head p{color:var(--muted);margin:0}
+.builder{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:22px;align-items:stretch}
+.preview{min-height:760px;border:1px solid #242424;border-radius:24px;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 42%,#26231d 0,#12110f 30%,#080808 70%);box-shadow:0 25px 80px #000 inset,0 30px 70px #0008}
+.preview:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 35%,#ffffff07 45%,transparent 58%);pointer-events:none}
+.preview-top{position:absolute;left:22px;right:22px;top:18px;display:flex;justify-content:space-between;color:#aaa;font-size:11px;letter-spacing:1.7px;text-transform:uppercase;z-index:4}.pill{border:1px solid #333;padding:8px 11px;border-radius:999px;background:#08080899}
+.watch-area{height:650px;display:grid;place-items:center;perspective:1100px;padding-top:45px;touch-action:none;cursor:grab}.watch-area:active{cursor:grabbing}
+.watch-card{width:min(530px,74vw);position:relative;transform-style:preserve-3d;transition:transform .12s ease-out;filter:drop-shadow(0 35px 38px #000)}
+.watch-img{width:100%;display:block;user-select:none;-webkit-user-drag:none;transition:filter .35s ease,transform .35s ease}
+.dial-tint{position:absolute;width:58%;aspect-ratio:1;border-radius:50%;left:21%;top:26%;mix-blend-mode:color;opacity:0;transition:.35s;pointer-events:none}
+.watch-card[data-dial="blue"] .dial-tint{background:#174c91;opacity:.75}.watch-card[data-dial="green"] .dial-tint{background:#1e633f;opacity:.72}.watch-card[data-dial="cream"] .dial-tint{background:#d8c6a1;opacity:.78}.watch-card[data-dial="burgundy"] .dial-tint{background:#681923;opacity:.78}.watch-card[data-case="black"] .watch-img{filter:brightness(.68) contrast(1.1)}.watch-card[data-case="gold"] .watch-img{filter:sepia(.45) saturate(1.35) hue-rotate(350deg) brightness(1.02)}.watch-card[data-bezel="black"] .watch-img{filter:brightness(.78) contrast(1.18)}
+.hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);border:1px solid #333;background:#080808cc;backdrop-filter:blur(12px);padding:11px 17px;border-radius:999px;color:#bdb9b1;font-size:12px;white-space:nowrap}
+.thumbs{position:absolute;bottom:22px;left:22px;display:flex;gap:8px}.thumb{width:58px;height:44px;border:1px solid #333;border-radius:8px;background:#111;display:grid;place-items:center;color:#888;font-size:9px}.thumb.active{border-color:var(--gold);color:#fff}
 
+.controls{border:1px solid #242424;border-radius:24px;background:linear-gradient(180deg,#111,#090909);padding:22px;box-shadow:0 25px 60px #0006}.controls h3{font:400 25px Georgia,serif;margin:0 0 18px}.control{padding:17px 0;border-top:1px solid #222}.control:first-of-type{border-top:0;padding-top:0}.labelrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.labelrow b{font-size:12px;letter-spacing:1.5px;text-transform:uppercase}.labelrow span{color:var(--muted);font-size:11px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.choice{border:1px solid #303030;background:#0c0c0c;color:#ddd;padding:11px 7px;border-radius:10px;font-size:11px;cursor:pointer;min-height:47px}.choice:hover{border-color:#777}.choice.active{border-color:var(--gold);box-shadow:0 0 0 1px #d9b66f33 inset;background:#15120d}.summary{margin-top:12px;padding-top:17px;border-top:1px solid #292929}.sumrow{display:flex;justify-content:space-between;color:#aaa;font-size:12px;margin:8px 0}.sumrow b{color:#eee}.total{display:flex;justify-content:space-between;align-items:end;margin:17px 0}.total small{color:#999}.total strong{font:400 34px Georgia,serif}.note{color:#777;font-size:10px;line-height:1.5;margin-top:12px}.fixed{color:#d9b66f}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.feature{border:1px solid #242424;border-radius:14px;padding:16px;background:#0b0b0b}.feature b{display:block;font-size:12px;margin-bottom:5px}.feature span{font-size:11px;color:#888}
+footer{border-top:1px solid #222;padding:28px 0;color:#777;font-size:11px;letter-spacing:1px}
+@media(max-width:950px){.navlinks{display:none}.builder{grid-template-columns:1fr}.controls{order:2}.preview{min-height:690px}.watch-area{height:600px}.features{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.wrap{width:min(100% - 20px,1320px)}.nav{height:62px}.hero{min-height:560px;padding:55px 0}.inspirations{grid-template-columns:1fr}.section-title{font-size:34px}.config-head h2{font-size:40px}.preview{min-height:590px;border-radius:18px}.watch-area{height:500px;padding-top:20px}.watch-card{width:94vw}.hint{font-size:10px;bottom:15px}.thumbs{display:none}.controls{border-radius:18px;padding:17px}.choices{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:1fr 1fr}.hero h1{letter-spacing:3px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="#">KRPTIME</a><nav class="navlinks"><a href="#accueil">Accueil</a><a href="#configurateur">Configurateur</a><a href="#inspirations">Inspirations</a><a href="#apropos">À propos</a></nav><div class="cart">Panier <b id="cart">0</b></div></div></header>
 
-.hero-watch-logo{
-  display:block !important;
-  width:min(420px,78vw) !important;
-  height:auto !important;
-  max-height:none !important;
-  object-fit:contain !important;
-  margin:0 auto 24px !important;
-}
+<main id="accueil">
+<section class="hero"><div class="glow"></div><div><img class="logoHero" src="krp-watch-logo.png" alt="KRP"><div class="eyebrow">KRPTIME · CREATE YOUR TIME</div><h1>TA MONTRE.<br>TON STYLE.</h1><p>Construis une pièce premium à ton image. Choisis chaque élément et visualise immédiatement ta configuration.</p><a class="btn" href="#configurateur">Créer ma montre</a></div></section>
 
-</style></head><body>
-<header><div class="wrap nav"><div class="logo">KRPTIME</div><div class="cart">Panier <span id="cart">0</span></div></div></header>
-<main><section class="hero">
-<img class="logo-hero" src="krp-watch-logo.png" alt="KRP" style="display:block;width:min(280px,70vw);height:auto;margin:0 auto 22px;"><div class="wrap"><div class="eyebrow">CREATE YOUR TIME</div><p>Crée une montre qui te ressemble. Choisis chaque détail, visualise ton modèle et prépare ta commande.</p><a class="btn" href="#config">Créer ma montre</a></div></section>
-<section class="section"><div class="wrap"><h2 class="title">Nos inspirations</h2><p class="sub">Remplace ces visuels par tes propres photos.</p><div class="grid">
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Classic</b><div class="price">À partir de 149 €</div></div></div>
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Steel</b><div class="price">À partir de 179 €</div></div></div>
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Black</b><div class="price">À partir de 189 €</div></div></div>
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Gold</b><div class="price">À partir de 199 €</div></div></div>
-</div></div></section>
-<section class="section" id="config"><div class="wrap"><h2 class="title">Configure ta KRPTIME</h2><p class="sub">Choisis les éléments et le prix évolue automatiquement.</p><div class="config">
-<div class="preview"><div class="bigwatch" id="preview"><div class="dial-brand">KRPTIME</div></div></div><div class="controls">
-<div class="control"><label>Boîtier</label><div class="choices" data-group="case"><button class="choice active" data-price="0">Acier</button><button class="choice" data-price="25">Noir +25 €</button><button class="choice" data-price="45">Or +45 €</button></div></div>
-<div class="control"><label>Cadran</label><div class="choices"><button class="choice active" data-color="#151515" data-price="0">Noir</button><button class="choice" data-color="#e9e9e9" data-price="10">Blanc +10 €</button><button class="choice" data-color="#173b4d" data-price="15">Bleu +15 €</button><button class="choice" data-color="#6b2430" data-price="15">Bordeaux +15 €</button></div></div>
-<div class="control"><label>Aiguilles</label><div class="choices"><button class="choice active" data-hand="#eee" data-price="0">Argent</button><button class="choice" data-hand="#d7b56d" data-price="10">Or +10 €</button><button class="choice" data-hand="#e33" data-price="10">Rouge +10 €</button></div></div>
-<div class="control"><label>Bracelet</label><div class="choices"><button class="choice active" data-price="0">Acier</button><button class="choice" data-price="20">Cuir +20 €</button><button class="choice" data-price="15">Silicone +15 €</button></div></div>
-<div class="control"><div class="total"><span>Total</span><span id="total">149 €</span></div><button class="btn" style="width:100%" id="add">Ajouter au panier</button><p class="note">Prototype : paiement et fabrication à connecter ensuite. Les prix sont modifiables dans le fichier.</p></div>
-</div></div></div></section></main><footer><div class="wrap">© 2026 KRPTIME — CREATE YOUR TIME</div></footer>
+<section class="section" id="inspirations"><div class="wrap"><h2 class="section-title">Nos inspirations</h2><p class="sub">Des configurations pensées pour un rendu premium.</p><div class="inspirations"><div class="insp"><strong>Black Signature</strong><span>Acier · cadran noir · lunette cannelée</span></div><div class="insp"><strong>Midnight Blue</strong><span>Acier noir · cadran bleu · aiguilles argent</span></div><div class="insp"><strong>Gold Edition</strong><span>Or · cadran bordeaux · détails premium</span></div></div></div></section>
+
+<section class="config" id="configurateur"><div class="wrap"><div class="config-head"><div class="eyebrow">KRPTIME CONFIGURATOR</div><h2>Configure ta montre</h2><p>Une prévisualisation réaliste, avec ton logo KRP fixe sur le cadran.</p></div>
+<div class="builder">
+<div class="preview">
+<div class="preview-top"><span>Prototype premium</span><span class="pill">KRP · automatique</span></div>
+<div class="watch-area" id="stage"><div class="watch-card" id="watchCard" data-case="steel" data-bezel="steel" data-dial="black"><img class="watch-img" src="krp-watch-realiste.png" alt="Montre KRPTIME KRP"><div class="dial-tint"></div></div></div>
+<div class="hint">↔ Fais glisser pour incliner la montre</div>
+<div class="thumbs"><div class="thumb active">FACE</div><div class="thumb">CÔTÉ</div><div class="thumb">DOS</div></div>
+</div>
+<aside class="controls"><h3>Ta configuration</h3>
+<div class="control"><div class="labelrow"><b>1 · Boîtier</b><span id="caseName">Acier</span></div><div class="choices" data-group="case"><button class="choice active" data-name="Acier" data-price="0">Acier<br><small>+0 €</small></button><button class="choice" data-name="Noir PVD" data-price="30" data-value="black">Noir<br><small>+30 €</small></button><button class="choice" data-name="Or" data-price="50" data-value="gold">Or<br><small>+50 €</small></button></div></div>
+<div class="control"><div class="labelrow"><b>2 · Lunette</b><span id="bezelName">Cannelée acier</span></div><div class="choices" data-group="bezel"><button class="choice active" data-name="Cannelée acier" data-price="0">Cannelée<br><small>+0 €</small></button><button class="choice" data-name="Noire" data-price="20" data-value="black">Noire<br><small>+20 €</small></button><button class="choice" data-name="Or" data-price="45" data-value="gold">Or<br><small>+45 €</small></button></div></div>
+<div class="control"><div class="labelrow"><b>3 · Cadran</b><span id="dialName">Noir Sunburst</span></div><div class="choices" data-group="dial"><button class="choice active" data-name="Noir Sunburst" data-price="0" data-value="black">Noir</button><button class="choice" data-name="Bleu" data-price="15" data-value="blue">Bleu<br><small>+15 €</small></button><button class="choice" data-name="Vert" data-price="15" data-value="green">Vert<br><small>+15 €</small></button><button class="choice" data-name="Crème" data-price="10" data-value="cream">Crème<br><small>+10 €</small></button><button class="choice" data-name="Bordeaux" data-price="15" data-value="burgundy">Bordeaux<br><small>+15 €</small></button></div></div>
+<div class="control"><div class="labelrow"><b>4 · Aiguilles</b><span id="handsName">Argent</span></div><div class="choices" data-group="hands"><button class="choice active" data-name="Argent" data-price="0">Argent</button><button class="choice" data-name="Noir" data-price="5">Noir<br><small>+5 €</small></button><button class="choice" data-name="Or" data-price="10">Or<br><small>+10 €</small></button><button class="choice" data-name="Rouge" data-price="10">Rouge<br><small>+10 €</small></button></div></div>
+<div class="control"><div class="labelrow"><b>5 · Bracelet</b><span id="strapName">Jubilee acier</span></div><div class="choices" data-group="strap"><button class="choice active" data-name="Jubilee acier" data-price="0">Jubilee</button><button class="choice" data-name="Oyster acier" data-price="0">Oyster</button><button class="choice" data-name="Cuir noir" data-price="20">Cuir noir<br><small>+20 €</small></button><button class="choice" data-name="Cuir brun" data-price="20">Cuir brun<br><small>+20 €</small></button><button class="choice" data-name="Silicone" data-price="15">Silicone<br><small>+15 €</small></button></div></div>
+<div class="summary"><div class="sumrow"><span>Logo sur cadran</span><b class="fixed">KRP · fixe</b></div><div class="sumrow"><span>Montage</span><b>Premium</b></div><div class="total"><small>Prix estimé</small><strong id="total">299 €</strong></div><button class="btn" style="width:100%" id="add">Ajouter au panier</button><div class="note">Prototype visuel. Le <b>KRP</b> est intégré au cadran et ne peut pas être supprimé ou remplacé.</div></div>
+</aside></div>
+<div class="features"><div class="feature"><b>✦ Rendu premium</b><span>Visuel photoréaliste de la pièce.</span></div><div class="feature"><b>⚙ Configuration</b><span>Boîtier, lunette, cadran, aiguilles, bracelet.</span></div><div class="feature"><b>◆ KRP signature</b><span>Logo fixe sur chaque cadran.</span></div><div class="feature"><b>↔ Interaction</b><span>Fais glisser la montre sur mobile.</span></div></div>
+</div></section>
+
+<section class="section" id="apropos"><div class="wrap"><h2 class="section-title">CREATE YOUR TIME</h2><p class="sub">KRPTIME — une identité, une montre, ton choix.</p></div></section>
+</main>
+<footer><div class="wrap">© 2026 KRPTIME — CREATE YOUR TIME</div></footer>
 <script>
-const base=149,preview=document.querySelector('#preview'),totalEl=document.querySelector('#total'),cart=document.querySelector('#cart');
-function recalc(){let t=base;document.querySelectorAll('.choice.active').forEach(x=>t+=+(x.dataset.price||0));totalEl.textContent=t+' €';return t}
-document.querySelectorAll('.choices').forEach(g=>g.addEventListener('click',e=>{if(!e.target.classList.contains('choice'))return;g.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));e.target.classList.add('active');if(e.target.dataset.color)preview.style.setProperty('--dial',e.target.dataset.color);if(e.target.dataset.hand)preview.style.setProperty('--hand',e.target.dataset.hand);if(g.dataset.group==='case')preview.style.borderColor=e.target.textContent.startsWith('Noir')?'#222':e.target.textContent.startsWith('Or')?'#d7b56d':'#aaa';recalc()}));
-document.querySelector('#add').onclick=()=>{cart.textContent=+cart.textContent+1;alert('Montre ajoutée au panier — '+recalc()+' €')};recalc();
-</script></body></html>
+const base=299, card=document.getElementById('watchCard'), total=document.getElementById('total'), cart=document.getElementById('cart');
+const names={case:'caseName',bezel:'bezelName',dial:'dialName',hands:'handsName',strap:'strapName'};
+function recalc(){let t=base;document.querySelectorAll('.choice.active').forEach(b=>t+=Number(b.dataset.price||0));total.textContent=t.toLocaleString('fr-FR')+' €';return t}
+document.querySelectorAll('.choices').forEach(group=>group.addEventListener('click',e=>{
+ const b=e.target.closest('.choice'); if(!b)return;
+ group.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ const g=group.dataset.group, v=b.dataset.value||'steel';
+ document.getElementById(names[g]).textContent=b.dataset.name;
+ if(g==='case') card.dataset.case=v;
+ if(g==='bezel') card.dataset.bezel=v;
+ if(g==='dial') card.dataset.dial=v;
+ recalc();
+}));
+let rx=0,ry=0,down=false,sx=0,sy=0;
+const stage=document.getElementById('stage');
+stage.addEventListener('pointerdown',e=>{down=true;sx=e.clientX;sy=e.clientY;stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointermove',e=>{if(!down)return;ry+=(e.clientX-sx)*.35;rx-=(e.clientY-sy)*.2;rx=Math.max(-14,Math.min(14,rx));ry=Math.max(-22,Math.min(22,ry));card.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;sx=e.clientX;sy=e.clientY});
+['pointerup','pointercancel'].forEach(x=>stage.addEventListener(x,()=>down=false));
+document.getElementById('add').onclick=()=>{cart.textContent=Number(cart.textContent)+1;alert('Configuration ajoutée au panier — '+recalc()+' €')};
+recalc();
+</script>
+</body></html>
