@@ -1,56 +1,96 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KRPTIME — Create Your Time</title>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KRPTIME — 3D Watch Configurator</title>
 <style>
-:root{--bg:#070707;--card:#111;--line:#292929;--text:#f4f4f4;--muted:#999;--gold:#d7b56d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}a{color:inherit;text-decoration:none}.wrap{max-width:1100px;margin:auto;padding:0 18px}header{position:sticky;top:0;z-index:5;background:#070707ee;border-bottom:1px solid var(--line)}.nav{height:64px;display:flex;align-items:center;justify-content:space-between}.logo{font-weight:900;letter-spacing:4px}.cart{border:1px solid #444;border-radius:999px;padding:9px 13px;font-size:13px}.hero{text-align:center;padding:65px 0 35px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:3px;font-weight:700}.hero h1{font-size:clamp(42px,11vw,86px);margin:12px 0;letter-spacing:5px}.hero p{color:var(--muted);max-width:560px;margin:0 auto 25px;line-height:1.6}.btn{display:inline-block;border:0;border-radius:999px;padding:13px 20px;background:#f4f4f4;color:#080808;font-weight:800;cursor:pointer}.section{padding:35px 0}.title{font-size:28px;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}.test-card{border-color:#4b4b4b}.test-badge{display:inline-block;font-size:10px;letter-spacing:1.5px;border:1px solid #666;border-radius:999px;padding:5px 8px;color:#bbb;margin-bottom:7px}.test-btn{margin-top:10px;width:100%;background:#1b1b1b;color:#fff;border:1px solid #555;border-radius:10px;padding:10px;font-weight:800;cursor:pointer}.test-note{font-size:11px;color:#888;margin-top:8px;line-height:1.4}.watch{height:210px;display:grid;place-items:center;background:radial-gradient(circle,#333,#151515 45%,#0b0b0b 70%)}.watch:before{content:"";width:110px;height:110px;border:13px solid #aaa;border-radius:50%;background:#111;box-shadow:0 0 0 3px #666,0 28px 0 12px #777}.info{padding:15px}.price{font-weight:800;margin-top:6px}.config{display:grid;gap:18px}.preview{background:#0e0e0e;border:1px solid var(--line);border-radius:20px;min-height:350px;display:grid;place-items:center}.bigwatch{width:210px;height:210px;border-radius:50%;border:25px solid #aaa;background:#171717;box-shadow:0 0 0 5px #555;position:relative}.brandmark{position:absolute;z-index:2;top:69px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:2px;font-weight:900;color:#eee;white-space:nowrap}.dial-brand{position:absolute;z-index:10;top:54px;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:2.5px;font-weight:900;color:#fff;white-space:nowrap;text-shadow:0 1px 3px #000}.bigwatch:before{content:"";position:absolute;inset:28px;border-radius:50%;background:var(--dial,#151515);border:2px solid #777}.bigwatch:after{content:"";position:absolute;left:105px;top:57px;width:3px;height:76px;background:var(--hand,#eee);transform:rotate(28deg);transform-origin:bottom}.controls{display:grid;gap:12px}.control{background:var(--card);border:1px solid var(--line);padding:15px;border-radius:15px}.control label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid #3a3a3a;background:#171717;color:#eee;border-radius:10px;padding:10px 12px;cursor:pointer}.choice.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}.control input{width:100%;background:#0a0a0a;border:1px solid #333;color:#fff;border-radius:10px;padding:12px}.total{display:flex;justify-content:space-between;font-size:22px;font-weight:900;margin-bottom:12px}.note{font-size:12px;color:var(--muted);line-height:1.5}footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:12px;margin-top:30px}@media(min-width:760px){.config{grid-template-columns:1fr 1fr}.grid{grid-template-columns:repeat(4,1fr)}.preview{min-height:560px}}
+*{box-sizing:border-box}body{margin:0;background:#050608;color:#f4f5f7;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;padding:10px 0 18px}
+.logo{font-weight:900;letter-spacing:3px;font-size:22px}.tag{font-size:12px;color:#8f98a5;border:1px solid #2a3039;border-radius:999px;padding:7px 10px}
+h1{font-size:clamp(32px,7vw,58px);line-height:.95;margin:25px 0 10px;letter-spacing:-2px}.sub{color:#aeb5c0;max-width:650px;line-height:1.6}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;margin-top:30px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.stage{min-height:610px;border:1px solid #202630;border-radius:28px;background:radial-gradient(circle at 50% 38%,#18202a 0,#0b0e13 38%,#060709 70%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 25px 70px #000}
+.stage:after{content:"";position:absolute;bottom:55px;width:70%;height:35px;background:#000;filter:blur(18px);opacity:.75;border-radius:50%}
+.watch3d{width:min(74vw,390px);height:530px;position:relative;transform:perspective(900px) rotateX(3deg) rotateY(-7deg);filter:drop-shadow(0 35px 25px #000)}
+.lug{position:absolute;width:95px;height:85px;background:linear-gradient(135deg,#eef2f5,#77808a 35%,#f8fafc 60%,#4d545d);border-radius:28px;z-index:1;left:calc(50% - 47px)}
+.lug.top{top:15px}.lug.bottom{bottom:15px}
+.case{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);width:285px;height:285px;border-radius:50%;background:linear-gradient(135deg,#f7fafc 0%,#7d858e 19%,#e9edf0 36%,#59616b 60%,#fafafa 78%,#5b626b 100%);box-shadow:inset 0 0 0 8px #c1c7cc,inset 0 0 0 17px #4e555e,0 12px 20px #000}
+.bezel{position:absolute;inset:19px;border-radius:50%;background:conic-gradient(#aeb5bc,#fff,#737a83,#e9edf2,#727982,#fff,#9ca3ab);box-shadow:inset 0 0 0 3px #535a62}
+.crystal{position:absolute;inset:34px;border-radius:50%;background:var(--dial,#6b22c9);overflow:hidden;box-shadow:inset 0 0 12px #fff5,0 0 0 2px #171a1e}
+.sun{position:absolute;inset:0;background:repeating-conic-gradient(from 0deg,#ffffff12 0deg,#ffffff00 5deg);mix-blend-mode:screen}
+.brand{position:absolute;top:62px;width:100%;text-align:center;font-weight:800;letter-spacing:1px;font-size:19px}.mod{position:absolute;top:87px;width:100%;text-align:center;font-size:9px;letter-spacing:2px;opacity:.9}
+.indices{position:absolute;inset:0}.idx{position:absolute;left:50%;top:50%;width:5px;height:27px;background:#f4f7fa;border-radius:4px;transform-origin:50% 0;box-shadow:0 0 0 2px #252a31}.i1{transform:rotate(0) translateY(-104px)}.i2{transform:rotate(30deg) translateY(-104px)}.i3{transform:rotate(60deg) translateY(-104px)}.i4{transform:rotate(90deg) translateY(-104px)}.i5{transform:rotate(120deg) translateY(-104px)}.i6{transform:rotate(150deg) translateY(-104px)}.i7{transform:rotate(180deg) translateY(-104px)}.i8{transform:rotate(210deg) translateY(-104px)}.i9{transform:rotate(240deg) translateY(-104px)}.i10{transform:rotate(270deg) translateY(-104px)}.i11{transform:rotate(300deg) translateY(-104px)}.i12{transform:rotate(330deg) translateY(-104px)}
+.hand{position:absolute;left:50%;top:50%;height:82px;width:4px;background:#fff;border-radius:4px;transform-origin:50% 100%;box-shadow:0 0 0 1px #222}.hour{transform:translate(-50%,-100%) rotate(48deg);height:65px}.minute{transform:translate(-50%,-100%) rotate(130deg);height:88px}.second{transform:translate(-50%,-100%) rotate(220deg);height:100px;width:2px;background:#e31d48}.pin{position:absolute;left:50%;top:50%;width:13px;height:13px;background:#ddd;border-radius:50%;transform:translate(-50%,-50%);z-index:3;border:2px solid #444}
+.date{position:absolute;right:29px;top:50%;transform:translateY(-50%);background:#fff;color:#111;border-radius:4px;padding:2px 4px;font-weight:800;font-size:12px;z-index:2}
+.crown{position:absolute;right:-17px;top:50%;transform:translateY(-50%);width:28px;height:45px;border-radius:7px;background:linear-gradient(#f6f7f8,#626a73,#e7eaed);box-shadow:inset 0 0 0 2px #555}
+.strap{position:absolute;z-index:0;left:50%;transform:translateX(-50%);width:118px;background:linear-gradient(90deg,#20252b,#68717a,#252a30);border-radius:25px}.strap.top{top:0;height:180px}.strap.bottom{bottom:0;height:180px}
+.controls{border:1px solid #202630;border-radius:28px;padding:22px;background:#0b0e13}.control{margin-bottom:22px}.control label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:9px}.price{font-size:13px;color:#9da6b2}.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.opt{border:1px solid #2b313b;background:#11151b;color:#e9edf2;border-radius:13px;padding:12px;cursor:pointer;text-align:left}.opt.active{border-color:#55d8d5;background:#102627;box-shadow:0 0 0 1px #55d8d5 inset}.sw{width:20px;height:20px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:8px;border:1px solid #555}.cta{width:100%;border:0;border-radius:15px;padding:16px;background:#fff;color:#050608;font-weight:900;font-size:16px;margin-top:5px}.total{display:flex;justify-content:space-between;align-items:end;border-top:1px solid #252b34;padding-top:18px;margin-top:8px}.total strong{font-size:30px}.note{font-size:11px;color:#737c88;margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="logo">KRPTIME</div><div class="tag">CONFIGURATEUR 3D · TEST</div></div>
+  <h1>CREATE YOUR<br>SEIKO MOD.</h1>
+  <p class="sub">Choisis chaque pièce et regarde la montre se transformer en direct : boîtier, lunette, cadran, aiguilles et bracelet.</p>
 
-.logo-hero{
-  width:min(260px,62vw);
-  height:auto;
-  display:block;
-  margin:0 auto 18px;
-  filter: drop-shadow(0 10px 28px rgba(255,255,255,.10));
-}
+  <div class="grid">
+    <section class="stage">
+      <div class="watch3d">
+        <div class="strap top" id="strapTop"></div><div class="strap bottom" id="strapBottom"></div>
+        <div class="lug top"></div><div class="lug bottom"></div>
+        <div class="case" id="case">
+          <div class="bezel" id="bezel"><div class="crystal" id="crystal">
+            <div class="sun"></div><div class="brand">SEIKO</div><div class="mod">MOD · AUTOMATIC</div>
+            <div class="indices">
+              <i class="idx i1"></i><i class="idx i2"></i><i class="idx i3"></i><i class="idx i4"></i><i class="idx i5"></i><i class="idx i6"></i><i class="idx i7"></i><i class="idx i8"></i><i class="idx i9"></i><i class="idx i10"></i><i class="idx i11"></i><i class="idx i12"></i>
+            </div>
+            <div class="date">25</div><div class="hand hour" id="hour"></div><div class="hand minute" id="minute"></div><div class="hand second"></div><div class="pin"></div>
+          </div></div><div class="crown"></div>
+        </div>
+      </div>
+    </section>
 
-
-.hero-watch-logo{
-  display:block !important;
-  width:min(420px,78vw) !important;
-  height:auto !important;
-  max-height:none !important;
-  object-fit:contain !important;
-  margin:0 auto 24px !important;
-}
-
-
-.seiko-photo{width:100%;height:210px;object-fit:cover;display:block;background:#111}
-.seiko-preview{width:min(100%,420px);max-height:560px;object-fit:contain;border-radius:18px;display:none}
-.preview.photo-mode{display:flex!important;padding:12px}
-.preview.photo-mode .bigwatch{display:none}
-.preview.photo-mode .seiko-preview{display:block}
-</style></head><body>
-<header><div class="wrap nav"><div class="logo">KRPTIME</div><div class="cart">Panier <span id="cart">0</span></div></div></header>
-<main><section class="hero">
-<img class="logo-hero" src="krp-watch-logo.png" alt="KRP" style="display:block;width:min(280px,70vw);height:auto;margin:0 auto 22px;"><div class="wrap"><div class="eyebrow">CREATE YOUR TIME</div><p>Crée une montre qui te ressemble. Choisis chaque détail, visualise ton modèle et prépare ta commande.</p><a class="btn" href="#config">Créer ma montre</a></div></section>
-<section class="section"><div class="wrap"><h2 class="title">Nos inspirations</h2><p class="sub">Remplace ces visuels par tes propres photos.</p><div class="grid">
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Classic</b><div class="price">À partir de 149 €</div></div></div>
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Steel</b><div class="price">À partir de 179 €</div></div></div>
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Black</b><div class="price">À partir de 189 €</div></div></div>
-<div class="card"><div class="watch"></div><div class="info"><b>Kryptime Gold</b><div class="price">À partir de 199 €</div></div></div>
-<div class="card test-card"><img class="seiko-photo" src="seiko-test.jpg" alt="SEIKO prototype de test"><div class="info"><span class="test-badge">MODE TEST</span><b>SEIKO — prototype</b><div class="price">À partir de 199 €</div><button class="test-btn" id="seikoTest">Modifier cette montre</button><div class="test-note">Maquette de test uniquement, sans affiliation avec Seiko.</div></div></div>
-</div></div></section>
-<section class="section" id="config"><div class="wrap"><h2 class="title" id="configTitle">Configure ta KRPTIME</h2><p class="sub" id="configSub">Choisis les éléments et le prix évolue automatiquement.</p><div class="config">
-<div class="preview" id="previewBox"><div class="bigwatch" id="preview"><div class="dial-brand" id="dialBrand">KRPTIME</div></div><img class="seiko-preview" id="seikoPreview" src="seiko-test.jpg" alt="SEIKO prototype de test"></div><div class="controls">
-<div class="control"><label>Boîtier</label><div class="choices" data-group="case"><button class="choice active" data-price="0">Acier</button><button class="choice" data-price="25">Noir +25 €</button><button class="choice" data-price="45">Or +45 €</button></div></div>
-<div class="control"><label>Cadran</label><div class="choices"><button class="choice active" data-color="#151515" data-price="0">Noir</button><button class="choice" data-color="#e9e9e9" data-price="10">Blanc +10 €</button><button class="choice" data-color="#173b4d" data-price="15">Bleu +15 €</button><button class="choice" data-color="#6b2430" data-price="15">Bordeaux +15 €</button></div></div>
-<div class="control"><label>Aiguilles</label><div class="choices"><button class="choice active" data-hand="#eee" data-price="0">Argent</button><button class="choice" data-hand="#d7b56d" data-price="10">Or +10 €</button><button class="choice" data-hand="#e33" data-price="10">Rouge +10 €</button></div></div>
-<div class="control"><label>Bracelet</label><div class="choices"><button class="choice active" data-price="0">Acier</button><button class="choice" data-price="20">Cuir +20 €</button><button class="choice" data-price="15">Silicone +15 €</button></div></div>
-<div class="control"><div class="total"><span>Total</span><span id="total">149 €</span></div><button class="btn" style="width:100%" id="add">Ajouter au panier</button><p class="note">Prototype : paiement et fabrication à connecter ensuite. Les prix sont modifiables dans le fichier.</p></div>
-</div></div></div></section></main><footer><div class="wrap">© 2026 KRPTIME — CREATE YOUR TIME</div></footer>
+    <section class="controls">
+      <div class="control"><label>Boîtier <span class="price" id="casePrice">+0 €</span></label>
+        <div class="opts"><button class="opt active" data-type="case" data-value="acier" data-price="0">Acier</button><button class="opt" data-type="case" data-value="noir" data-price="25">Noir +25€</button><button class="opt" data-type="case" data-value="or" data-price="55">Or +55€</button></div>
+      </div>
+      <div class="control"><label>Lunette <span class="price" id="bezelPrice">+0 €</span></label>
+        <div class="opts"><button class="opt active" data-type="bezel" data-value="silver" data-price="0">Argent</button><button class="opt" data-type="bezel" data-value="black" data-price="20">Noire +20€</button><button class="opt" data-type="bezel" data-value="gold" data-price="45">Or +45€</button></div>
+      </div>
+      <div class="control"><label>Cadran <span class="price" id="dialPrice">+0 €</span></label>
+        <div class="opts"><button class="opt active" data-type="dial" data-value="#111827" data-price="0"><span class="sw" style="background:#111827"></span>Noir</button><button class="opt" data-type="dial" data-value="#6b22c9" data-price="15"><span class="sw" style="background:#6b22c9"></span>Violet +15€</button><button class="opt" data-type="dial" data-value="#0b5f67" data-price="15"><span class="sw" style="background:#0b5f67"></span>Vert pétrole +15€</button><button class="opt" data-type="dial" data-value="#f1eee5" data-price="10"><span class="sw" style="background:#f1eee5"></span>Crème +10€</button></div>
+      </div>
+      <div class="control"><label>Aiguilles <span class="price" id="handsPrice">+0 €</span></label>
+        <div class="opts"><button class="opt active" data-type="hands" data-value="silver" data-price="0">Argent</button><button class="opt" data-type="hands" data-value="gold" data-price="10">Or +10€</button><button class="opt" data-type="hands" data-value="red" data-price="10">Rouge +10€</button></div>
+      </div>
+      <div class="control"><label>Bracelet <span class="price" id="strapPrice">+0 €</span></label>
+        <div class="opts"><button class="opt active" data-type="strap" data-value="steel" data-price="0">Acier</button><button class="opt" data-type="strap" data-value="black" data-price="15">Acier noir +15€</button><button class="opt" data-type="strap" data-value="brown" data-price="20">Cuir brun +20€</button><button class="opt" data-type="strap" data-value="rubber" data-price="10">Caoutchouc +10€</button></div>
+      </div>
+      <div class="total"><div><span style="color:#8e97a3;font-size:13px">Prix de base</span><br><strong id="total">249 €</strong></div><button class="cta" onclick="alert('Prototype : configuration enregistrée !')">Enregistrer ma configuration</button></div>
+      <div class="note">Prototype visuel uniquement. La mention SEIKO est utilisée ici pour une démonstration de configurateur de montre modifiée et ne signifie pas que KRPTIME est affilié à Seiko.</div>
+    </section>
+  </div>
+</div>
 <script>
-let base=149,preview=document.querySelector('#preview'),previewBox=document.querySelector('#previewBox'),seikoPreview=document.querySelector('#seikoPreview'),totalEl=document.querySelector('#total'),cart=document.querySelector('#cart'),dialBrand=document.querySelector('#dialBrand'),configTitle=document.querySelector('#configTitle'),configSub=document.querySelector('#configSub');
-function recalc(){let t=base;document.querySelectorAll('.choice.active').forEach(x=>t+=+(x.dataset.price||0));totalEl.textContent=t+' €';return t}
-document.querySelectorAll('.choices').forEach(g=>g.addEventListener('click',e=>{if(!e.target.classList.contains('choice'))return;g.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));e.target.classList.add('active');if(e.target.dataset.color)preview.style.setProperty('--dial',e.target.dataset.color);if(e.target.dataset.hand)preview.style.setProperty('--hand',e.target.dataset.hand);if(g.dataset.group==='case')preview.style.borderColor=e.target.textContent.startsWith('Noir')?'#222':e.target.textContent.startsWith('Or')?'#d7b56d':'#aaa';
-if(previewBox.classList.contains('photo-mode')){let f=''; if(g.dataset.group==='case'){f=e.target.textContent.startsWith('Noir')?'grayscale(.55) contrast(1.15)':e.target.textContent.startsWith('Or')?'sepia(.45) saturate(1.35)':'none'} if(e.target.dataset.color){const c=e.target.dataset.color; f=c==='#e9e9e9'?'grayscale(.7) brightness(1.2)':c==='#173b4d'?'hue-rotate(25deg) saturate(1.15)':c==='#6b2430'?'hue-rotate(-20deg) saturate(1.35)':'none'} if(e.target.dataset.hand){f=e.target.textContent.startsWith('Or')?'sepia(.5) saturate(1.3)':e.target.textContent.startsWith('Rouge')?'sepia(.2) saturate(2) hue-rotate(320deg)':'none'} seikoPreview.style.filter=f} recalc()}));
-document.querySelector('#add').onclick=()=>{cart.textContent=+cart.textContent+1;alert('Montre ajoutée au panier — '+recalc()+' €')};
-document.querySelector('#seikoTest').onclick=()=>{base=199;dialBrand.textContent='SEIKO';configTitle.textContent='Configure ta SEIKO — TEST';configSub.textContent='Mode test : les choix ci-dessous simulent les modifications du modèle.';previewBox.classList.add('photo-mode');seikoPreview.style.filter='none';document.querySelector('#config').scrollIntoView({behavior:'smooth'});recalc()};
-recalc();
-</script></body></html>
+const state={case:0,bezel:0,dial:0,hands:0,strap:0}; const base=249;
+const $=s=>document.querySelector(s);
+function render(){
+ let total=base;
+ document.querySelectorAll('.opt').forEach(b=>{if(b.classList.contains('active')) total+=+b.dataset.price});
+ $('#total').textContent=total+' €';
+ $('#crystal').style.setProperty('--dial', document.querySelector('[data-type="dial"].active').dataset.value);
+ const c=document.querySelector('[data-type="case"].active').dataset.value;
+ $('#case').style.filter=c==='noir'?'grayscale(.8) brightness(.55)':c==='or'?'sepia(.8) saturate(1.7) hue-rotate(350deg)':'none';
+ const bz=document.querySelector('[data-type="bezel"].active').dataset.value;
+ $('#bezel').style.filter=bz==='black'?'brightness(.35)':bz==='gold'?'sepia(1) saturate(2) hue-rotate(350deg)':'none';
+ const st=document.querySelector('[data-type="strap"].active').dataset.value;
+ const grad={steel:'linear-gradient(90deg,#20252b,#68717a,#252a30)',black:'linear-gradient(90deg,#050608,#222,#050608)',brown:'linear-gradient(90deg,#32170c,#8a4c2c,#2c1208)',rubber:'linear-gradient(90deg,#070809,#17191c,#050607)'}[st];
+ $('#strapTop').style.background=grad;$('#strapBottom').style.background=grad;
+ const h=document.querySelector('[data-type="hands"].active').dataset.value;
+ const col={silver:'#fff',gold:'#f0c75e',red:'#e31d48'}[h]; document.querySelectorAll('.hand').forEach(x=>x.style.background=col);
+}
+document.querySelectorAll('.opt').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-type="'+btn.dataset.type+'"]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render()}));
+render();
+</script>
+</body></html>
