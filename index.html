@@ -62,7 +62,126 @@ header{position:sticky;top:0;z-index:50;background:#050505e8;backdrop-filter:blu
 <section class="section" id="a-propos"><div class="wrap"><h2 class="section-title">KRPTIME</h2><p class="sub">Une montre pensée autour de ta configuration.</p></div></section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+(() => {
+const mount=document.getElementById('watch3d');
+const canvas=document.createElement('canvas');
+canvas.style.cssText='display:block;width:100%;height:100%;touch-action:none';
+mount.innerHTML='';
+mount.appendChild(canvas);
+const gl=canvas.getContext('webgl',{antialias:true,alpha:false});
+if(!gl){mount.innerHTML='<div style="height:100%;display:grid;place-items:center;color:#aaa;padding:30px;text-align:center">La 3D WebGL n’est pas disponible sur cet appareil.</div>';return;}
+
+const vs=`attribute vec3 aP;attribute vec3 aN;attribute vec2 aUV;
+uniform mat4 uMVP,uM;varying vec3 vN,vP;varying vec2 vUV;
+void main(){vec4 p=uM*vec4(aP,1.0);vP=p.xyz;vN=mat3(uM)*aN;vUV=aUV;gl_Position=uMVP*vec4(aP,1.0);}`;
+const fs=`precision mediump float;uniform vec3 uColor;uniform float uMetal,uRough;uniform sampler2D uTex;uniform float uUseTex;
+varying vec3 vN,vP;varying vec2 vUV;
+void main(){vec3 n=normalize(vN);vec3 l1=normalize(vec3(-.5,1.2,1.0));vec3 l2=normalize(vec3(.8,.3,.5));
+float d=max(dot(n,l1),0.0),d2=max(dot(n,l2),0.0);vec3 v=normalize(vec3(0.0,0.4,1.0)-vP);vec3 h=normalize(l1+v);
+float s=pow(max(dot(n,h),0.0),mix(18.0,90.0,1.0-uRough));vec3 base=uColor;
+if(uUseTex>.5)base*=texture2D(uTex,vUV).rgb;
+vec3 c=base*(.18+d*.62+d2*.22)+vec3(s)*(.25+.75*uMetal);
+gl_FragColor=vec4(c,1.0);}`;
+
+function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(x));return x}
+const prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
+gl.useProgram(prog);
+const A={p:gl.getAttribLocation(prog,'aP'),n:gl.getAttribLocation(prog,'aN'),uv:gl.getAttribLocation(prog,'aUV')};
+const U={mvp:gl.getUniformLocation(prog,'uMVP'),m:gl.getUniformLocation(prog,'uM'),color:gl.getUniformLocation(prog,'uColor'),metal:gl.getUniformLocation(prog,'uMetal'),rough:gl.getUniformLocation(prog,'uRough'),tex:gl.getUniformLocation(prog,'uTex'),useTex:gl.getUniformLocation(prog,'uUseTex')};
+gl.enable(gl.DEPTH_TEST);gl.clearColor(.018,.018,.018,1);
+
+function I(){return [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}
+function mul(a,b){let r=new Array(16);for(let c=0;c<4;c++)for(let r0=0;r0<4;r0++)r[c*4+r0]=a[r0]*b[c*4]+a[4+r0]*b[c*4+1]+a[8+r0]*b[c*4+2]+a[12+r0]*b[c*4+3];return r}
+function T(x,y,z){let m=I();m[12]=x;m[13]=y;m[14]=z;return m}
+function S(x,y,z){let m=I();m[0]=x;m[5]=y;m[10]=z;return m}
+function RX(a){let c=Math.cos(a),s=Math.sin(a),m=I();m[5]=c;m[6]=s;m[9]=-s;m[10]=c;return m}
+function RY(a){let c=Math.cos(a),s=Math.sin(a),m=I();m[0]=c;m[2]=-s;m[8]=s;m[10]=c;return m}
+function RZ(a){let c=Math.cos(a),s=Math.sin(a),m=I();m[0]=c;m[1]=s;m[4]=-s;m[5]=c;return m}
+function persp(fov,asp,n,f){let q=1/Math.tan(fov/2),m=new Array(16).fill(0);m[0]=q/asp;m[5]=q;m[10]=(f+n)/(n-f);m[11]=-1;m[14]=2*f*n/(n-f);return m}
+function look(eye){let z=norm([-eye[0],-.15-eye[1],-eye[2]]),x=norm(cross([0,1,0],z)),y=cross(z,x),m=I();m[0]=x[0];m[1]=x[1];m[2]=x[2];m[4]=y[0];m[5]=y[1];m[6]=y[2];m[8]=z[0];m[9]=z[1];m[10]=z[2];m[12]=-dot(x,eye);m[13]=-dot(y,eye);m[14]=-dot(z,eye);return m}
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2], cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]], norm=a=>{let l=Math.hypot(...a)||1;return a.map(v=>v/l)};
+
+function geo(verts,norms,uvs){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(verts),gl.STATIC_DRAW);const nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(norms),gl.STATIC_DRAW);const ub=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,ub);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(uvs),gl.STATIC_DRAW);return {b,nb,ub,n:verts.length/3}}
+function box(w,h,d){
+let x=w/2,y=h/2,z=d/2,V=[],N=[],U=[];
+const faces=[[[ -x,-y,z],[x,-y,z],[x,y,z],[-x,y,z]],[ [x,-y,-z],[-x,-y,-z],[-x,y,-z],[x,y,-z]],[[-x,y,z],[x,y,z],[x,y,-z],[-x,y,-z]],[[-x,-y,-z],[x,-y,-z],[x,-y,z],[-x,-y,z]],[[x,-y,z],[x,-y,-z],[x,y,-z],[x,y,z]],[[-x,-y,-z],[-x,-y,z],[-x,y,z],[-x,y,-z]]];
+const ns=[[0,0,1],[0,0,-1],[0,1,0],[0,-1,0],[1,0,0],[-1,0,0]];
+for(let f=0;f<6;f++){let q=faces[f],n=ns[f];[[0,1,2],[0,2,3]].forEach(t=>t.forEach(i=>{V.push(...q[i]);N.push(...n);U.push(i===0||i===3?0:1,i<2?0:1)}))}
+return geo(V,N,U)
+}
+function cyl(r,h,seg=72){
+let V=[],N=[],U=[];for(let i=0;i<seg;i++){let a=i*Math.PI*2/seg,b=(i+1)*Math.PI*2/seg,c=Math.cos(a),s=Math.sin(a),d=Math.cos(b),e=Math.sin(b);
+[[[r*c,r*s,h/2],[r*d,r*e,h/2],[0,0,h/2],[0,0,1]],[[r*d,r*e,-h/2],[r*c,r*s,-h/2],[0,0,-h/2],[0,0,-1]],[[r*c,r*s,-h/2],[r*d,r*e,-h/2],[r*d,r*e,h/2],[r*c,r*s,h/2],[d,e,0]]].forEach(f=>{if(f.length===4){for(let j=0;j<3;j++){V.push(...f[j]);N.push(...f[3]);U.push(j/2,0)}}else{let p=f;[[0,1,2],[0,2,3]].forEach(t=>t.forEach(j=>{V.push(...p[j]);N.push(...p[4]);U.push(j===0||j===3?0:1,j<2?0:1)}))}})}
+return geo(V,N,U)
+}
+function ring(ro,ri,h,seg=96){let V=[],N=[],U=[];for(let i=0;i<seg;i++){let a=i*Math.PI*2/seg,b=(i+1)*Math.PI*2/seg;let ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b);const q=[[[ri*ca,ri*sa,h/2],[ro*ca,ro*sa,h/2],[ro*cb,ro*sb,h/2],[ri*cb,ri*sb,h/2],[0,0,1]],[[ro*ca,ro*sa,-h/2],[ri*ca,ri*sa,-h/2],[ri*cb,ri*sb,-h/2],[ro*cb,ro*sb,-h/2],[0,0,-1]]];q.forEach(f=>[[0,1,2],[0,2,3]].forEach(t=>t.forEach(j=>{V.push(...f[j]);N.push(...f[4]);U.push(0,0)})));}return geo(V,N,U)}
+function tex(text){const c=document.createElement('canvas');c.width=512;c.height=180;const x=c.getContext('2d');x.clearRect(0,0,512,180);x.fillStyle='#f4f0e8';x.font='bold 92px Georgia';x.textAlign='center';x.textBaseline='middle';x.fillText(text,256,92);const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);return t}
+const logoTex=tex('KRP'), dateTex=tex('28');
+function material(c,m=.8,r=.3,t=null){return {c,m,r,t}}
+const mats={steel:material([.68,.68,.66],.98,.2),black:material([.035,.04,.045],.95,.18),gold:material([.72,.46,.12],.98,.16),silver:material([.78,.79,.8],.95,.22),dialBlack:material([.012,.012,.014],.12,.28),dialBlue:material([.035,.13,.34],.2,.25),dialGreen:material([.03,.28,.16],.18,.26),dialCream:material([.72,.63,.47],.12,.34),dialRed:material([.35,.025,.045],.16,.26),red:material([.65,.02,.025],.8,.2)};
+let settings={case:'steel',bezel:'fluted',dial:'black',hands:'silver',bracelet:'jubilee'};
+const prices={case:{steel:0,black:30,gold:50},bezel:{fluted:0,smooth:0,black:20},dial:{black:0,blue:15,green:15,cream:10,burgundy:15},hands:{silver:0,black:0,gold:10,red:10,blue:10},bracelet:{jubilee:0,oyster:0,black:15,brown:20,silicone:10}};
+const names={case:{steel:'Acier',black:'Noir',gold:'Or'},bezel:{fluted:'Cannelée',smooth:'Lisse',black:'Noire'},dial:{black:'Noir',blue:'Bleu',green:'Vert',cream:'Blanc',burgundy:'Bordeaux'},hands:{silver:'Argent',black:'Noir',gold:'Or',red:'Rouge',blue:'Bleu'},bracelet:{jubilee:'Jubilee',oyster:'Oyster',black:'Cuir noir',brown:'Cuir brun',silicone:'Silicone'}};
+let objects=[],rx=-.12,ry=.05,zoom=8.3,drag=false,lx=0,ly=0,auto=false;
+
+function add(g,mat,pos=[0,0,0],rot=[0,0,0],scale=[1,1,1],texture=null){objects.push({g,mat,pos,rot,scale,texture})}
+function addWatch(){
+objects=[];
+const cm=mats[settings.case], bm=settings.bezel==='black'?mats.black:cm, dm={black:mats.dialBlack,blue:mats.dialBlue,green:mats.dialGreen,cream:mats.dialCream,burgundy:mats.dialRed}[settings.dial];
+add(cyl(2.0,.58),cm);
+add(ring(2.03,1.72,.18),bm,[0,0,.34]);
+if(settings.bezel==='fluted'){for(let i=0;i<72;i++){let a=i*Math.PI*2/72;add(box(.07,.19,.20),bm,[Math.cos(a)*2.04,Math.sin(a)*2.04,.43],[0,0,a])}}
+add(cyl(1.67,.16),dm,[0,0,.35]);
+add(cyl(1.76,.04),material([.5,.6,.72],.05,.06),[0,0,.51]);
+for(let i=0;i<12;i++){let a=i*Math.PI*2/12;let x=Math.sin(a)*1.28,y=Math.cos(a)*1.28;add(box(.07,i%3===0?.27:.18,.06),mats.silver,[x,y,.43],[0,0,-a])}
+const hm={silver:mats.silver,black:mats.black,gold:mats.gold,red:mats.red,blue:material([.08,.3,.8],.8,.2)}[settings.hands];
+add(box(.11,.95,.06),hm,[-.18,.25,.5],[0,0,-.72]);add(box(.085,1.35,.055),hm,[.28,.42,.51],[0,0,.78]);add(box(.025,1.55,.025),mats.gold,[0,0,.54],[0,0,.25]);add(cyl(.13,.07),mats.gold,[0,0,.56],[0,0,0]);
+add(box(.5,.38,.07),material([.92,.9,.84],.05,.5),[1.13,-.1,.48]);
+add(box(1.05,.38,.02),material([1,1,1],0,.5),[0,.58,.56],[0,0,0],[1,1,1],logoTex);
+add(box(.44,.24,.02),material([1,1,1],0,.5),[1.13,-.1,.54],[0,0,0],[1,1,1],dateTex);
+const crownMat=cm;add(cyl(.3,.45,48),crownMat,[2.23,0,.05],[0,Math.PI/2,0]);
+let strap=settings.bracelet==='black'?mats.black:settings.bracelet==='brown'?material([.22,.07,.025],.05,.55):settings.bracelet==='silicone'?material([.025,.025,.025],.05,.65):cm;
+for(let i=0;i<10;i++){let y=2.25+i*.48;add(box(.78,.4,.28),strap,[0,y,0]);add(box(.78,.4,.28),strap,[0,-y,0])}
+if(settings.bracelet==='jubilee'||settings.bracelet==='oyster')for(let i=0;i<18;i++){let y=2.18+i*.27;add(box(.23,.22,.3),cm,[0,y,0]);add(box(.23,.22,.3),cm,[0,-y,0])}
+}
+addWatch();
+
+function draw(){
+const d=window.devicePixelRatio||1,w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);if(canvas.width!==w*d||canvas.height!==h*d){canvas.width=w*d;canvas.height=h*d;gl.viewport(0,0,canvas.width,canvas.height)}
+gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+const P=persp(.58,w/h,.1,50), V=look([0,1.0,zoom]), base=mul(RY(ry),RX(rx));
+for(const o of objects){let M=mul(base,mul(T(...o.pos),mul(RZ(o.rot[2]),mul(RY(o.rot[1]),mul(RX(o.rot[0]),S(...o.scale))))));let MVP=mul(P,mul(V,M));gl.uniformMatrix4fv(U.mvp,false,new Float32Array(MVP));gl.uniformMatrix4fv(U.m,false,new Float32Array(M));gl.uniform3fv(U.color,new Float32Array(o.mat.c));gl.uniform1f(U.metal,o.mat.m);gl.uniform1f(U.rough,o.mat.r);gl.uniform1f(U.useTex,o.texture?1:0);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,o.texture);gl.uniform1i(U.tex,0);
+gl.bindBuffer(gl.ARRAY_BUFFER,o.g.b);gl.enableVertexAttribArray(A.p);gl.vertexAttribPointer(A.p,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,o.g.nb);gl.enableVertexAttribArray(A.n);gl.vertexAttribPointer(A.n,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,o.g.ub);gl.enableVertexAttribArray(A.uv);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,o.g.n)}
+if(auto)ry+=.006;requestAnimationFrame(draw)}
+canvas.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture?.(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;ry+=(e.clientX-lx)*.009;rx+=(e.clientY-ly)*.004;rx=Math.max(-.9,Math.min(.9,rx));lx=e.clientX;ly=e.clientY});
+canvas.addEventListener('pointerup',()=>drag=false);canvas.addEventListener('pointercancel',()=>drag=false);
+canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(5.8,Math.min(12,zoom+e.deltaY*.006))},{passive:false});
+
+const controls={target:{set:()=>{}},reset:()=>{rx=-.12;ry=.05;zoom=8.3}};
+function renderOptions(){
+document.getElementById('caseOpts').innerHTML=[['steel','Acier',0,'case-steel'],['black','Noir',30,'case-black'],['gold','Or',50,'case-gold']].map(x=>optHTML('case',...x)).join('');
+document.getElementById('bezelOpts').innerHTML=[['fluted','Cannelée',0,'bezel-fluted'],['smooth','Lisse',0,'bezel-smooth'],['black','Noire',20,'bezel-black']].map(x=>optHTML('bezel',...x)).join('');
+document.getElementById('dialOpts').innerHTML=[['black','Noir',0,'dial-black'],['blue','Bleu',15,'dial-blue'],['green','Vert',15,'dial-green'],['cream','Blanc',10,'dial-cream'],['burgundy','Bordeaux',15,'dial-burgundy']].map(x=>optHTML('dial',...x)).join('');
+document.getElementById('handsOpts').innerHTML=[['silver','Argent',0,'case-steel'],['black','Noir',0,'case-black'],['gold','Or',10,'case-gold'],['red','Rouge',10,'dial-burgundy'],['blue','Bleu',10,'dial-blue']].map(x=>optHTML('hands',...x)).join('');
+document.getElementById('braceletOpts').innerHTML=[['jubilee','Jubilee',0,'bracelet-steel'],['oyster','Oyster',0,'bracelet-steel'],['black','Cuir noir',15,'bracelet-black'],['brown','Cuir brun',20,'bracelet-brown'],['silicone','Silicone',10,'bracelet-silicone']].map(x=>optHTML('bracelet',...x)).join('');
+document.querySelectorAll('.option').forEach(b=>b.onclick=()=>{settings[b.dataset.type]=b.dataset.value;addWatch();renderOptions();updateSummary()})
+}
+function optHTML(type,val,label,price,cls=''){return `<button class="option ${settings[type]===val?'active':''}" data-type="${type}" data-value="${val}"><div class="swatch ${cls}"></div><b>${label}</b><small>${price?'+ '+price+' €':'+ 0 €'}</small></button>`}
+function updateSummary(){for(const k of ['case','bezel','dial','hands','bracelet'])document.getElementById('s'+k[0].toUpperCase()+k.slice(1)).textContent=names[k][settings[k]];let total=249+prices.case[settings.case]+prices.bezel[settings.bezel]+prices.dial[settings.dial]+prices.hands[settings.hands]+prices.bracelet[settings.bracelet];document.getElementById('price').textContent=total+' €'}
+renderOptions();updateSummary();
+document.getElementById('reset').onclick=()=>{settings={case:'steel',bezel:'fluted',dial:'black',hands:'silver',bracelet:'jubilee'};controls.reset();addWatch();renderOptions();updateSummary()};
+document.getElementById('spin').onclick=()=>{auto=!auto;document.getElementById('spin').textContent=auto?'Ⅱ':'▶'};
+document.getElementById('zoomIn').onclick=()=>zoom=Math.max(5.8,zoom-.7);
+document.getElementById('zoomOut').onclick=()=>zoom=Math.min(12,zoom+.7);
+document.querySelectorAll('.thumb').forEach(b=>b.onclick=()=>{document.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active'));b.classList.add('active');const v=b.dataset.view;if(v==='front'){rx=-.12;ry=.05}if(v==='three'){rx=-.25;ry=.65}if(v==='side'){rx=.05;ry=1.45}if(v==='back'){rx=-.1;ry=3.14}});
+document.getElementById('add').onclick=()=>{let n=+document.getElementById('cartCount').textContent+1;document.getElementById('cartCount').textContent=n;document.getElementById('add').textContent='AJOUTÉ AU PANIER ✓';setTimeout(()=>document.getElementById('add').textContent='AJOUTER AU PANIER',1300)};
+draw();
+})();
+</script>
+
 <script>
 
 const mount=document.getElementById('watch3d');
